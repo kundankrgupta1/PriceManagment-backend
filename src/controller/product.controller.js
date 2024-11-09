@@ -16,7 +16,7 @@ export const addProduct = async (req, res) => {
 			});
 		}
 
-		if (!product || !brand || !category || !box_qty || !single_price ) {
+		if (!product || !brand || !category || !box_qty || !single_price) {
 			return res.status(400).json({
 				message: "❌ Please fill all the fields",
 				success: false
@@ -112,6 +112,36 @@ export const updateProduct = async (req, res) => {
 		});
 	}
 };
+
+export const deleteProduct = async (req, res) => {
+	const { id } = req.params;
+	const { userId } = req.user;
+	try {
+		if (!userId) {
+			return res.status(401).json({
+				message: "❌ Unauthorized Access",
+				success: false
+			})
+		}
+		const product = await productModel.findByIdAndDelete(id);
+		if (!product) {
+			return res.status(404).json({
+				message: "🚫 Product not found",
+				success: false
+			})
+		}
+		return res.status(200).json({
+			message: "✅ Product deleted successfully",
+			success: true
+		});
+	} catch (error) {
+		return res.status(500).json({
+			message: "❌ Error deleting product",
+			error: error.message,
+			success: false
+		});
+	}
+}
 
 export const getAllProducts = async (req, res) => {
 	try {
@@ -247,6 +277,12 @@ export const getSingleProduct = async (req, res) => {
 			});
 		}
 		const product = await productModel.findById(id);
+		if (!product) {
+			return res.status(200).json({
+				message: "❌ Product not found!!",
+				success: false
+			});
+		}
 		return res.status(200).json({
 			message: "✅ Product fetched successfully",
 			product,

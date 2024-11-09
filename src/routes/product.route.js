@@ -2,7 +2,7 @@ import express from "express";
 
 import { upload } from "../middleware/multer.middleware.js";
 import authMiddleware from "../middleware/auth.middleware.js";
-import { addProduct, getAllBrands, getAllCategories, getAllProducts, getProductsByBrand, getProductsByCategory, getSingleProduct, updateProduct } from "../controller/product.controller.js";
+import { addProduct, deleteProduct, getAllBrands, getAllCategories, getAllProducts, getProductsByBrand, getProductsByCategory, getSingleProduct, updateProduct } from "../controller/product.controller.js";
 const productRouter = express.Router();
 
 productRouter.post("/add", upload.single("product_image"), authMiddleware, addProduct);
@@ -13,5 +13,6 @@ productRouter.get("/brand/:brand", authMiddleware, getProductsByBrand);
 productRouter.get("/category", authMiddleware, getAllCategories);
 productRouter.get("/category/:category", authMiddleware, getProductsByCategory);
 productRouter.get("/product/:id", authMiddleware, getSingleProduct);
+productRouter.delete("/delete/:id", authMiddleware, deleteProduct);
 
 export default productRouter;
