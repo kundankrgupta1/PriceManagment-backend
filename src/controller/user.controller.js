@@ -214,7 +214,7 @@ const verifyOtp = async (req, res) => {
 
 		let token;
 		if (otpPurpose === "Login") {
-			token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1d" });
+			token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
 		}
 
 		await user.save();
